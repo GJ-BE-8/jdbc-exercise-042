@@ -14,11 +14,27 @@ import java.util.Optional;
 @Slf4j
 public class StatementStudentRepository implements StudentRepository {
 
+
     @Override
     public int save(Student student){
         //todo#1 insert student
+        Connection connection = DbUtils.getConnection();
+        String sql = null;
+        try {
+            Statement statement = connection.createStatement();
+            sql = "Insert into jdbc_students(id,name,gender,age) values (";
+            sql += student.getId();
+            sql += student.getName();
+            sql += student.getGender();
+            sql += student.getAge();
+            sql += ")";
 
-        return 0;
+            return statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 
     @Override
